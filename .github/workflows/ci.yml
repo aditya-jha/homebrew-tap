@@ -1,0 +1,23 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  formula:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tap this checkout as aditya-jha/tap
+        run: |
+          mkdir -p "$(brew --repository)/Library/Taps/aditya-jha"
+          ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/aditya-jha/homebrew-tap"
+      - run: brew audit --strict --online aditya-jha/tap/onetree
+      - run: brew install aditya-jha/tap/onetree
+      - run: brew test aditya-jha/tap/onetree
+      - run: onetree version
