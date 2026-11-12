@@ -17,6 +17,7 @@ jobs:
         run: |
           mkdir -p "$(brew --repository)/Library/Taps/aditya-jha"
           ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/aditya-jha/homebrew-tap"
+          brew trust aditya-jha/tap   # Homebrew loads formulae only from taps the user trusts
       - run: brew audit --strict --online aditya-jha/tap/onetree
       - run: brew install aditya-jha/tap/onetree
       - run: brew test aditya-jha/tap/onetree
